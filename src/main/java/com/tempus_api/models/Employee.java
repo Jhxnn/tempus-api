@@ -20,7 +20,6 @@ public class Employee {
 
     private double earningHour;
 
-
     @ManyToOne
     @JoinColumn(name = "enterprise_id",referencedColumnName = "id")
     private Enterprise enterprise;
