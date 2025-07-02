@@ -22,6 +22,9 @@ public class Point {
 
     private LocalDate date;
 
+
+    @ManyToOne
+    @JoinColumn(name = "id", referencedColumnName = "employee_id")
     private Employee employee;
 
     public UUID getPointId() {

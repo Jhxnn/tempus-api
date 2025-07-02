@@ -20,5 +20,48 @@ public class Employee {
 
     private double earningHour;
 
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id",referencedColumnName = "id")
     private Enterprise enterprise;
+
+    public UUID getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(UUID employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public double getEarningHour() {
+        return earningHour;
+    }
+
+    public void setEarningHour(double earningHour) {
+        this.earningHour = earningHour;
+    }
+
+    public Enterprise getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Enterprise enterprise) {
+        this.enterprise = enterprise;
+    }
 }

@@ -2,6 +2,7 @@ package com.tempus_api.models;
 
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Reference;
 
 import java.util.UUID;
 
@@ -19,6 +20,19 @@ public class Enterprise {
     private String cep;
 
     private String cnpj;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public UUID getEnterpriseId() {
         return enterpriseId;
