@@ -5,6 +5,6 @@ import java.util.UUID;
 public record EmployeeDto (String name,
                            String password,
                            double earningHour,
-                           UUID enterprise
+                           UUID enterpriseId
                            ){
 }

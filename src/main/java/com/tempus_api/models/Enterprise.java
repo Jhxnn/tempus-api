@@ -18,17 +18,6 @@ public class Enterprise {
 
     private String cnpj;
 
-    @Enumerated(EnumType.STRING)
-    private Roles roles;
-
-    public Roles getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Roles roles) {
-        this.roles = roles;
-    }
-
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

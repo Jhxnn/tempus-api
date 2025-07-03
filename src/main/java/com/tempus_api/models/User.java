@@ -1,5 +1,6 @@
 package com.tempus_api.models;
 
+import com.tempus_api.models.enums.Roles;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -20,6 +21,16 @@ public class User {
     private String password;
 
     private String cep;
+
+    private Roles role;
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
 
     public UUID getUserId() {
         return userId;
