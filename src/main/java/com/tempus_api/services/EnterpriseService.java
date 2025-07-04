@@ -28,6 +28,25 @@ public class EnterpriseService {
         return enterpriseRepository.save(enterprise);
     }
 
+
+    public Enterprise updateEnterprise(EnterpriseDto enterpriseDto, UUID id){
+        Enterprise enterprise = findById(id);
+        if(enterpriseDto.cep() != null){
+            enterprise.setCep(enterpriseDto.cep());
+        }
+        if(enterpriseDto.userId() != null){
+            User user = userService.findById(enterpriseDto.userId());
+            enterprise.setUser(user);
+        }
+        if(enterpriseDto.name()!= null){
+            enterprise.setName(enterpriseDto.name());
+        }
+        if(enterpriseDto.cnpj() != null){
+            enterprise.setCnpj(enterpriseDto.cnpj());
+        }
+        return  enterpriseRepository.save(enterprise);
+    }
+
     public Enterprise findById(UUID id){
         return enterpriseRepository.findById(id).orElseThrow(() -> new RuntimeException("cannot be found"));
     }
@@ -35,6 +54,8 @@ public class EnterpriseService {
     public List<Enterprise> findAll() {
         return enterpriseRepository.findAll();
     }
+
+
 
     public void deleteEnterprise(UUID id){
         Enterprise enterprise = findById(id);
