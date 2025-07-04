@@ -2,6 +2,7 @@ package com.tempus_api.services;
 
 import com.tempus_api.dtos.EnterpriseDto;
 import com.tempus_api.models.Enterprise;
+import com.tempus_api.models.User;
 import com.tempus_api.repositories.EnterpriseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,14 @@ public class EnterpriseService {
     @Autowired
     EnterpriseRepository enterpriseRepository;
 
+    @Autowired
+    UserService userService;
+
     public Enterprise createEnterprise(EnterpriseDto enterpriseDto){
         Enterprise enterprise = new Enterprise();
         BeanUtils.copyProperties(enterpriseDto, enterprise);
-
+        User user = userService.findById(enterpriseDto.userId());
+        enterprise.setUser(user);
         return enterpriseRepository.save(enterprise);
     }
 
