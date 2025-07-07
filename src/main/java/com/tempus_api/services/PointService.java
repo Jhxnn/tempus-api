@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,8 @@ public class PointService {
         Point point = new Point();
         BeanUtils.copyProperties(pointDto, point);
         Employee employee = employeeService.findById(pointDto.employeeId());
+        Duration duration = Duration.between(point.getStart(), point.getFinish());
+        point.setTotal(duration.toHours());
         point.setEmployee(employee);
         return pointRepository.save(point);
     }
@@ -43,6 +46,11 @@ public class PointService {
             Employee employee = employeeService.findById(pointDto.employeeId());
             point.setEmployee(employee);
         }
+        if(pointDto.start() != null && pointDto.finish() != null){
+            Duration duration = Duration.between(pointDto.start(), pointDto.finish());
+            point.setTotal(duration.toHours());
+        }
+
         return pointRepository.save(point);
     }
 

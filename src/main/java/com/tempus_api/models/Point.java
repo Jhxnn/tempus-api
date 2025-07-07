@@ -20,7 +20,7 @@ public class Point {
 
     private LocalDateTime finish;
 
-    private LocalDateTime total;
+    private long total;
 
     private LocalDate date;
 
@@ -32,13 +32,10 @@ public class Point {
         return pointId;
     }
 
-    public LocalDateTime getTotal() {
-        return total;
-    }
-
-    public void setTotal(LocalDateTime total) {
+    public void setTotal(long total) {
         this.total = total;
     }
+
 
     public void setPointId(UUID pointId) {
         this.pointId = pointId;
