@@ -20,6 +20,8 @@ public class Point {
 
     private LocalDateTime finish;
 
+    private LocalDateTime total;
+
     private LocalDate date;
 
     @ManyToOne
@@ -28,6 +30,14 @@ public class Point {
 
     public UUID getPointId() {
         return pointId;
+    }
+
+    public LocalDateTime getTotal() {
+        return total;
+    }
+
+    public void setTotal(LocalDateTime total) {
+        this.total = total;
     }
 
     public void setPointId(UUID pointId) {
