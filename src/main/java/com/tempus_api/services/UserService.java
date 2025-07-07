@@ -3,6 +3,8 @@ package com.tempus_api.services;
 import com.tempus_api.dtos.AuthDto;
 import com.tempus_api.dtos.RegisterDto;
 import com.tempus_api.dtos.UserResponseDto;
+import com.tempus_api.exceptions.BadRequestException;
+import com.tempus_api.exceptions.ConflictException;
 import com.tempus_api.infra.security.TokenService;
 import com.tempus_api.models.User;
 import com.tempus_api.models.enums.Roles;
@@ -48,21 +50,18 @@ public class UserService {
         String cpfCnpjRegex = "^\\d{11}$|^\\d{14}$";
 
         if(userRepository.existsByEmail(registerDto.email())){
-            throw new RuntimeException("The email is already exist");
+            throw new ConflictException("The email is already exist");
 
         }
 
         if (!registerDto.email().matches(emailRegex)) {
-            throw new RuntimeException("Invalid email format");
+            throw new BadRequestException("Invalid email format");
         }
 
         if (!registerDto.password().matches(passwordRegex)) {
-            throw new RuntimeException("Password must be at least 8 characters long, contain one uppercase letter and one special character");
+            throw new BadRequestException("Password must be at least 8 characters long, contain one uppercase letter and one special character");
         }
 
-        if (userRepository.findByEmail(registerDto.email()) != null) {
-            throw new RuntimeException("Email is already in use");
-        }
 
         String encryptedPass = new BCryptPasswordEncoder().encode(registerDto.password());
         User user = new User();
