@@ -71,7 +71,7 @@ public class UserService {
         user.setRole(Roles.COMMON);
         user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
-        return new UserResponseDto(user.getName(), user.getEmail());
+        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole());
     }
 
 }

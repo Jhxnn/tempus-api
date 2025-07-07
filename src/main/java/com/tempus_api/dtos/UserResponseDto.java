@@ -1,4 +1,8 @@
 package com.tempus_api.dtos;
 
-public record UserResponseDto (String name, String email){
+import com.tempus_api.models.enums.Roles;
+
+import java.time.LocalDateTime;
+
+public record UserResponseDto (String name, String email, String cep, Roles roles){
 }
