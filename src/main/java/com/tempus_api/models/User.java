@@ -3,6 +3,8 @@ package com.tempus_api.models;
 import com.tempus_api.models.enums.Roles;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +25,16 @@ public class User {
     private String cep;
 
     private Roles role;
+
+    private LocalDateTime createdAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Roles getRole() {
         return role;
