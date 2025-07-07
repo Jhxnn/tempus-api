@@ -1,6 +1,7 @@
 package com.tempus_api.services;
 
 import com.tempus_api.dtos.AuthDto;
+import com.tempus_api.dtos.AuthResponseDto;
 import com.tempus_api.dtos.RegisterDto;
 import com.tempus_api.dtos.UserResponseDto;
 import com.tempus_api.exceptions.BadRequestException;
@@ -36,10 +37,11 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Cannot be found user"));
     }
 
-    public String login(AuthDto authDto){
+    public AuthResponseDto login(AuthDto authDto){
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        return tokenService.generateToken((User) auth.getPrincipal());
+        String token = tokenService.generateToken((User) auth.getPrincipal());
+        return new AuthResponseDto(auth.getName(),token);
 
     }
 

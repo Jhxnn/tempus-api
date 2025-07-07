@@ -1,6 +1,7 @@
 package com.tempus_api.controllers;
 
 import com.tempus_api.dtos.AuthDto;
+import com.tempus_api.dtos.AuthResponseDto;
 import com.tempus_api.dtos.RegisterDto;
 import com.tempus_api.dtos.UserResponseDto;
 import com.tempus_api.services.UserService;
@@ -19,7 +20,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthDto authDto){
+    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthDto authDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.login(authDto));
     }
 
