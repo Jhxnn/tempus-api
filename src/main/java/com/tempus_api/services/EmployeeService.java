@@ -3,9 +3,12 @@ package com.tempus_api.services;
 import com.tempus_api.dtos.EmployeeDto;
 import com.tempus_api.models.Employee;
 import com.tempus_api.models.Enterprise;
+import com.tempus_api.models.User;
 import com.tempus_api.repositories.EmployeeRepository;
+import com.tempus_api.repositories.EnterpriseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,9 @@ public class EmployeeService {
 
     @Autowired
     EnterpriseService enterpriseService;
+
+    @Autowired
+    EnterpriseRepository enterpriseRepository;
 
     public Employee createEmployee(EmployeeDto employeeDto){
         Employee employee = new Employee();
@@ -52,7 +58,9 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll() {
-        return employeeRepository.findAll();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Enterprise enterprise = enterpriseRepository.findByUser(user);
+        return employeeRepository.findByEnterprise(enterprise);
     }
 
     public void deleteEmployee(UUID id){

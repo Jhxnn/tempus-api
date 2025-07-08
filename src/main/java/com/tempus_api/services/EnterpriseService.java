@@ -29,6 +29,8 @@ public class EnterpriseService {
     }
 
 
+
+
     public Enterprise updateEnterprise(EnterpriseDto enterpriseDto, UUID id){
         Enterprise enterprise = findById(id);
         if(enterpriseDto.cep() != null){

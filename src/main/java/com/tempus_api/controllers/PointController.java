@@ -18,9 +18,9 @@ public class PointController {
     @Autowired
     PointService pointService;
 
-    @GetMapping
-    public ResponseEntity<List<Point>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(pointService.findAll());
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<List<Point>> findAll(@PathVariable(name = "id")UUID id){
+        return ResponseEntity.status(HttpStatus.OK).body(pointService.findAll(id));
     }
 
     @GetMapping("/{id}")
