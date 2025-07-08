@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface EnterpriseRepository extends JpaRepository<Enterprise, UUID> {
 
-    Enterprise findByUser(User user);
+    List<Enterprise> findByUser(User user);
 }

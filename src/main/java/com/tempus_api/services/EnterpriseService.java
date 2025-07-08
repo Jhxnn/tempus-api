@@ -3,9 +3,11 @@ package com.tempus_api.services;
 import com.tempus_api.dtos.EnterpriseDto;
 import com.tempus_api.models.Enterprise;
 import com.tempus_api.models.User;
+import com.tempus_api.models.enums.Roles;
 import com.tempus_api.repositories.EnterpriseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +56,12 @@ public class EnterpriseService {
     }
 
     public List<Enterprise> findAll() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user.getRole().equals(Roles.ADMIN)){
         return enterpriseRepository.findAll();
+
+        }
+        return enterpriseRepository.findByUser(user);
     }
 
 
