@@ -27,8 +27,19 @@ public class PointService {
         Employee employee = employeeService.findById(pointDto.employeeId());
         Duration duration = Duration.between(point.getStart(), point.getFinish());
         point.setTotal(duration.toHours());
+        point.setPayed(false);
         point.setEmployee(employee);
         return pointRepository.save(point);
+    }
+
+    public double employeeEarnings(List<Point> points){
+
+        double totalMoney = 0;
+        for(Point point : points){
+            totalMoney += point.getTotal() * point.getEmployee().getEarningHour();
+            point.setPayed(true);
+        }
+        return totalMoney;
     }
 
     public Point updatePoint(PointDto pointDto, UUID id){

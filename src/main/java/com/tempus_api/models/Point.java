@@ -28,6 +28,8 @@ public class Point {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
+    private boolean payed;
+
     public UUID getPointId() {
         return pointId;
     }
@@ -36,6 +38,17 @@ public class Point {
         this.total = total;
     }
 
+    public long getTotal() {
+        return total;
+    }
+
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
 
     public void setPointId(UUID pointId) {
         this.pointId = pointId;
