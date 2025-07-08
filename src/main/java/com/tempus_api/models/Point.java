@@ -30,6 +30,8 @@ public class Point {
 
     private boolean payed;
 
+
+
     public UUID getPointId() {
         return pointId;
     }
@@ -37,6 +39,7 @@ public class Point {
     public void setTotal(long total) {
         this.total = total;
     }
+
 
     public long getTotal() {
         return total;

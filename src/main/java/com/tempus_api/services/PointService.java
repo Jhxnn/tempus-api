@@ -46,11 +46,12 @@ public class PointService {
 
 
     public double employeeEarnings(List<Point> points){
-
         double totalMoney = 0;
         for(Point point : points){
-            totalMoney += point.getTotal() * point.getEmployee().getEarningHour();
-            point.setPayed(true);
+            if(!point.isPayed()) {
+                totalMoney += point.getTotal() * point.getEmployee().getEarningHour();
+                point.setPayed(true);
+            }
         }
         return totalMoney;
     }
