@@ -21,9 +21,9 @@ public class EmployeeController {
     EmployeeService employeeService;
 
 
-    @GetMapping
-    public ResponseEntity<List<Employee>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAll());
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<Employee>> findAll(@PathVariable(name = "id")UUID enterpriseId){
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAll(enterpriseId));
     }
 
     @GetMapping("/{id}")

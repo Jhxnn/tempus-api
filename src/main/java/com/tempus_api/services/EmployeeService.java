@@ -57,9 +57,9 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElseThrow(()-> new RuntimeException("cannot be found"));
     }
 
-    public List<Employee> findAll() {
+    public List<Employee> findAll(UUID id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Enterprise enterprise = enterpriseRepository.findByUser(user);
+        Enterprise enterprise = enterpriseService.findById(id);
         return employeeRepository.findByEnterprise(enterprise);
     }
 
