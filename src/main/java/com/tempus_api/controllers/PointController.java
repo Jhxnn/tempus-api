@@ -4,10 +4,12 @@ import com.tempus_api.dtos.PointDto;
 import com.tempus_api.models.Point;
 import com.tempus_api.services.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +24,17 @@ public class PointController {
     public ResponseEntity<List<Point>> findAll(@PathVariable(name = "id")UUID id){
         return ResponseEntity.status(HttpStatus.OK).body(pointService.findAll(id));
     }
+
+    @GetMapping("/per-date")
+    public ResponseEntity<List<Point>> getPointsPerDate(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("id") UUID id
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(pointService.findByDate(startDate, endDate,id));
+    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Point> findById(@PathVariable(name = "id") UUID id){
