@@ -10,10 +10,12 @@ import com.tempus_api.repositories.EnterpriseRepository;
 import com.tempus_api.repositories.PointRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +56,12 @@ public class PointService {
             }
         }
         return totalMoney;
+    }
+
+    public List<Point> findByDate(LocalDate start, LocalDate finish, UUID id){
+        Employee employee = employeeService.findById(id);
+        return pointRepository.findByEmployeeAndDateBetween(employee,start, finish);
+
     }
 
     public Point updatePoint(PointDto pointDto, UUID id){
