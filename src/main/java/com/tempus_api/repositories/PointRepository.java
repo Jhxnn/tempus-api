@@ -12,5 +12,7 @@ public interface PointRepository extends JpaRepository<Point, UUID> {
 
     List<Point> findByEmployeeAndDateBetween(Employee employee, LocalDate startDate, LocalDate endDate);
 
+    List<Point> findByEmployee(Employee employee);
+
 
 }
