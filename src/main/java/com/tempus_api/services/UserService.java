@@ -74,4 +74,33 @@ public class UserService {
         return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole());
     }
 
+    public UserResponseDto updateUser(RegisterDto registerDto, UUID id) {
+
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+=<>?{}\\[\\]~;:.,-]).{8,}$";
+        String cpfCnpjRegex = "^\\d{11}$|^\\d{14}$";
+
+
+        if(userRepository.existsByEmail(registerDto.email())){
+            throw new ConflictException("The email is already exist");
+
+        }
+
+        if (!registerDto.email().matches(emailRegex)) {
+            throw new BadRequestException("Invalid email format");
+        }
+
+        if (!registerDto.password().matches(passwordRegex)) {
+            throw new BadRequestException("Password must be at least 8 characters long, contain one uppercase letter and one special character");
+        }
+
+        String encryptedPass = new BCryptPasswordEncoder().encode(registerDto.password());
+        User user = findById(id);
+        BeanUtils.copyProperties(registerDto, user);
+        user.setRole(Roles.COMMON);
+        user.setCreatedAt(LocalDateTime.now());
+        userRepository.save(user);
+        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole());
+    }
+
 }
