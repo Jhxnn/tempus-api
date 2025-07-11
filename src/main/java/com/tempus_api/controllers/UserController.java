@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @Tag(name = "Usuário", description = "Operações de autenticação e cadastro")
@@ -44,5 +46,10 @@ public class UserController {
     public ResponseEntity<UserResponseDto> register(
             @Parameter(description = "Dados do novo usuário") @RequestBody RegisterDto registerDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerDto));
+    }
+    @PostMapping("/update/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(
+            @Parameter(description = "Dados do usuário") @RequestBody RegisterDto registerDto, @PathVariable(name = "id")UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(registerDto, id));
     }
 }
