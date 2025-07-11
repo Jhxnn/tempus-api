@@ -47,6 +47,8 @@ public class UserController {
             @Parameter(description = "Dados do novo usuário") @RequestBody RegisterDto registerDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerDto));
     }
+
+
     @PostMapping("/update/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
             @Parameter(description = "Dados do usuário") @RequestBody RegisterDto registerDto, @PathVariable(name = "id")UUID id) {
