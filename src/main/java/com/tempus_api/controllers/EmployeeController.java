@@ -10,10 +10,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,5 +73,15 @@ public class EmployeeController {
             @Parameter(description = "ID do funcionário") @PathVariable(name = "id") UUID id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Logar funcionario")
+    @ApiResponse(responseCode = "204", description = "Funcionario Logado")
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> loginEmployee(
+            @RequestParam("id") UUID id,
+            @RequestParam("password") String password){
+
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.loginEmployee(password,id));
     }
 }

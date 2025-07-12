@@ -4,6 +4,7 @@ import com.tempus_api.dtos.AuthDto;
 import com.tempus_api.dtos.AuthResponseDto;
 import com.tempus_api.dtos.RegisterDto;
 import com.tempus_api.dtos.UserResponseDto;
+import com.tempus_api.models.User;
 import com.tempus_api.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -48,10 +50,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerDto));
     }
 
-
+    @Operation(summary = "Atualizar um usuário")
     @PostMapping("/update/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
             @Parameter(description = "Dados do usuário") @RequestBody RegisterDto registerDto, @PathVariable(name = "id")UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(registerDto, id));
     }
+
+    @Operation(summary = "Listar todos os usuários")
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
+    }
+
+
+
 }

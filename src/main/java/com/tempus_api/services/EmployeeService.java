@@ -52,6 +52,13 @@ public class EmployeeService {
 
         return employeeRepository.save(employee);
     }
+    public boolean loginEmployee(String password, UUID id){
+        Employee employee = findById(id);
+        if(employee.getPassword().equals(password)){
+            return true;
+        }
+        return false;
+    }
 
     public Employee findById(UUID id){
         return employeeRepository.findById(id).orElseThrow(()-> new RuntimeException("cannot be found"));

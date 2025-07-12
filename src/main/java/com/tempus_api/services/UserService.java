@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,7 +41,7 @@ public class UserService {
 
     public AuthResponseDto login(AuthDto authDto){
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
+        var auth = this.authenticationManager   .authenticate(usernamePassword);
         String token = tokenService.generateToken((User) auth.getPrincipal());
         return new AuthResponseDto(auth.getName(),token);
 
@@ -70,8 +72,9 @@ public class UserService {
         BeanUtils.copyProperties(registerDto, user);
         user.setRole(Roles.COMMON);
         user.setCreatedAt(LocalDateTime.now());
+        user.setPassword(encryptedPass);
         userRepository.save(user);
-        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole());
+        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole(), user.getUserId());
     }
 
     public UserResponseDto updateUser(RegisterDto registerDto, UUID id) {
@@ -100,7 +103,16 @@ public class UserService {
         user.setRole(Roles.COMMON);
         user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
-        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole());
+        return new UserResponseDto(user.getName(), user.getEmail(), user.getCep(), user.getRole(), user.getUserId());
+    }
+
+    public List<UserResponseDto> findAll(){
+        List<User>  users = userRepository.findAll();
+        List<UserResponseDto> usersResponse = new ArrayList<>();
+        for(User user : users){
+            usersResponse.add(new UserResponseDto(user.getName(),user.getEmail(),user.getCep(),user.getRole(),user.getUserId()));
+        }
+        return usersResponse;
     }
 
 }
