@@ -14,8 +14,11 @@ import org.springframework.cglib.core.Local;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,28 +38,45 @@ public class PointService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public Point createPoint(PointDto pointDto){
+    public Point createPoint(PointDto pointDto) {
         Point point = new Point();
-        BeanUtils.copyProperties(pointDto, point);
-        Employee employee = employeeService.findById(pointDto.employeeId());
-        Duration duration = Duration.between(point.getStart(), point.getFinish());
-        point.setTotal(duration.toHours());
+
+        point.setStart(pointDto.start());
+        point.setFinish(pointDto.finish());
+        point.setDate(pointDto.date());
+
+        long minutes = Duration.between(point.getStart(), point.getFinish()).toMinutes();
+        BigDecimal totalHoras = BigDecimal.valueOf(minutes).divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+        point.setTotal(totalHoras);
+
         point.setPayed(false);
+
+        Employee employee = employeeService.findById(pointDto.employeeId());
         point.setEmployee(employee);
+
         return pointRepository.save(point);
     }
 
 
-    public double employeeEarnings(List<Point> points){
-        double totalMoney = 0;
-        for(Point point : points){
-            if(!point.isPayed()) {
-                totalMoney += point.getTotal() * point.getEmployee().getEarningHour();
+
+
+    public BigDecimal employeeEarnings(List<Point> points) {
+        BigDecimal totalMoney = BigDecimal.ZERO;
+
+        for (Point point : points) {
+            if (!point.isPayed()) {
+                BigDecimal totalHours = point.getTotal(); // Ex: 8.5
+                BigDecimal earningPerHour = point.getEmployee().getEarningHour();
+                BigDecimal earnings = totalHours.multiply(earningPerHour);
+
+                totalMoney = totalMoney.add(earnings);
                 point.setPayed(true);
             }
         }
-        return totalMoney;
+
+        return totalMoney.setScale(2, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
     }
+
 
     public List<Point> findByDate(LocalDate start, LocalDate finish, UUID id){
         Employee employee = employeeService.findById(id);
@@ -80,8 +100,9 @@ public class PointService {
             point.setEmployee(employee);
         }
         if(pointDto.start() != null && pointDto.finish() != null){
-            Duration duration = Duration.between(pointDto.start(), pointDto.finish());
-            point.setTotal(duration.toHours());
+            long minutes = Duration.between(point.getStart(), point.getFinish()).toMinutes();
+            BigDecimal totalHoras = BigDecimal.valueOf(minutes).divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+            point.setTotal(totalHoras);
         }
 
         return pointRepository.save(point);

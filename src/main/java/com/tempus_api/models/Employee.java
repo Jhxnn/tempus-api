@@ -3,6 +3,7 @@ package com.tempus_api.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,7 @@ public class Employee {
 
     private String password;
 
-    private double earningHour;
+    private BigDecimal earningHour;
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id",referencedColumnName = "id")
@@ -48,11 +49,11 @@ public class Employee {
         this.password = password;
     }
 
-    public double getEarningHour() {
+    public BigDecimal getEarningHour() {
         return earningHour;
     }
 
-    public void setEarningHour(double earningHour) {
+    public void setEarningHour(BigDecimal earningHour) {
         this.earningHour = earningHour;
     }
 

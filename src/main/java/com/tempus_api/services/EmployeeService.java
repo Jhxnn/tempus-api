@@ -39,7 +39,7 @@ public class EmployeeService {
         if(employeeDto.name() != null){
             employee.setName(employeeDto.name());
         }
-        if(employeeDto.earningHour() != 0){
+        if(employeeDto.earningHour() != null){
             employee.setEarningHour(employeeDto.earningHour());
         }
         if(employeeDto.password() != null){

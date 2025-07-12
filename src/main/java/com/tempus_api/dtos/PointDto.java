@@ -4,10 +4,11 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
-public record PointDto(LocalDateTime start,
-                       LocalDateTime finish,
+public record PointDto(LocalTime start,
+                       LocalTime finish,
                        LocalDate date,
                        UUID employeeId) {
 }

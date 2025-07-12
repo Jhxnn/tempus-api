@@ -3,8 +3,10 @@ package com.tempus_api.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -16,11 +18,11 @@ public class Point {
     @Column(name = "id")
     private UUID pointId;
 
-    private LocalDateTime start;
+    private LocalTime start;
 
-    private LocalDateTime finish;
+    private LocalTime finish;
 
-    private long total;
+    private BigDecimal total;
 
     private LocalDate date;
 
@@ -36,14 +38,31 @@ public class Point {
         return pointId;
     }
 
-    public void setTotal(long total) {
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-
-    public long getTotal() {
-        return total;
+    public LocalTime getStart() {
+        return start;
     }
+
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
+    public LocalTime getFinish() {
+        return finish;
+    }
+
+    public void setFinish(LocalTime finish) {
+        this.finish = finish;
+    }
+
+
 
     public boolean isPayed() {
         return payed;
@@ -55,22 +74,6 @@ public class Point {
 
     public void setPointId(UUID pointId) {
         this.pointId = pointId;
-    }
-
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDateTime start) {
-        this.start = start;
-    }
-
-    public LocalDateTime getFinish() {
-        return finish;
-    }
-
-    public void setFinish(LocalDateTime finish) {
-        this.finish = finish;
     }
 
     public LocalDate getDate() {
