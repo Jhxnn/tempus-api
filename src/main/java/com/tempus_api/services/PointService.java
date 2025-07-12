@@ -1,5 +1,7 @@
 package com.tempus_api.services;
 
+import com.tempus_api.dtos.EarningsDto;
+import com.tempus_api.dtos.EmployeeDto;
 import com.tempus_api.dtos.PointDto;
 import com.tempus_api.models.Employee;
 import com.tempus_api.models.Enterprise;
@@ -60,10 +62,10 @@ public class PointService {
 
 
 
-    public BigDecimal employeeEarnings(List<Point> points) {
+    public EarningsDto employeeEarnings(List<UUID> points) {
         BigDecimal totalMoney = BigDecimal.ZERO;
-
-        for (Point point : points) {
+        for (UUID pointId: points) {
+            Point point = findById(pointId);
             if (!point.isPayed()) {
                 BigDecimal totalHours = point.getTotal(); // Ex: 8.5
                 BigDecimal earningPerHour = point.getEmployee().getEarningHour();
@@ -74,7 +76,8 @@ public class PointService {
             }
         }
 
-        return totalMoney.setScale(2, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
+        BigDecimal earnings =  totalMoney.setScale(2, RoundingMode.HALF_UP);
+        return new EarningsDto(earnings);
     }
 
 

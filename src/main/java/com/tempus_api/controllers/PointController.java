@@ -1,5 +1,6 @@
 package com.tempus_api.controllers;
 
+import com.tempus_api.dtos.EarningsDto;
 import com.tempus_api.dtos.PointDto;
 import com.tempus_api.models.Point;
 import com.tempus_api.services.PointService;
@@ -72,11 +73,11 @@ public class PointController {
     }
 
     @Operation(summary = "Calcular ganhos do funcionario ")
-    @ApiResponse(responseCode = "201", description = "Ganhos calculados com sucesso")
-    @PostMapping
-    public ResponseEntity<BigDecimal> employeeEarnings(
-            @Parameter(description = "Lista de pontos") @RequestBody List<Point> points) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pointService.employeeEarnings(points));
+    @ApiResponse(responseCode = "200", description = "Ganhos calculados com sucesso")
+    @PostMapping("/earnings")
+    public ResponseEntity<EarningsDto> employeeEarnings(
+            @Parameter(description = "Lista de pontos") @RequestBody List<UUID> points) {
+        return ResponseEntity.status(HttpStatus.OK).body(pointService.employeeEarnings(points));
     }
 
     @Operation(summary = "Atualizar um ponto existente")
