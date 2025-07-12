@@ -54,10 +54,7 @@ public class EmployeeService {
     }
     public boolean loginEmployee(String password, UUID id){
         Employee employee = findById(id);
-        if(employee.getPassword().equals(password)){
-            return true;
-        }
-        return false;
+        return employee.getPassword().equals(password);
     }
 
     public Employee findById(UUID id){
