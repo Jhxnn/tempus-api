@@ -4,5 +4,5 @@ import com.tempus_api.models.enums.Roles;
 
 import java.time.LocalDateTime;
 
-public record UserResponseDto (String name, String email, String cep, Roles roles){
+public record UserResponseDto (String name, String email, String cep, Roles role){
 }
