@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -68,6 +69,14 @@ public class PointController {
     public ResponseEntity<Point> createPoint(
             @Parameter(description = "DTO com informações do ponto") @RequestBody PointDto pointDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pointService.createPoint(pointDto));
+    }
+
+    @Operation(summary = "Calcular ganhos do funcionario ")
+    @ApiResponse(responseCode = "201", description = "Ganhos calculados com sucesso")
+    @PostMapping
+    public ResponseEntity<BigDecimal> employeeEarnings(
+            @Parameter(description = "Lista de pontos") @RequestBody List<Point> points) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pointService.employeeEarnings(points));
     }
 
     @Operation(summary = "Atualizar um ponto existente")
