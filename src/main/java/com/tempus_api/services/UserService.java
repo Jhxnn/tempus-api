@@ -6,6 +6,7 @@ import com.tempus_api.dtos.RegisterDto;
 import com.tempus_api.dtos.UserResponseDto;
 import com.tempus_api.exceptions.BadRequestException;
 import com.tempus_api.exceptions.ConflictException;
+import com.tempus_api.exceptions.UnauthorizedException;
 import com.tempus_api.infra.security.TokenService;
 import com.tempus_api.models.User;
 import com.tempus_api.models.enums.Roles;
@@ -13,6 +14,7 @@ import com.tempus_api.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,10 +42,15 @@ public class UserService {
     }
 
     public AuthResponseDto login(AuthDto authDto){
-        UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
-        var auth = this.authenticationManager   .authenticate(usernamePassword);
-        String token = tokenService.generateToken((User) auth.getPrincipal());
-        return new AuthResponseDto(auth.getName(),token);
+        try {
+            UsernamePasswordAuthenticationToken usernamePassword =
+                    new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            String token = tokenService.generateToken((User) auth.getPrincipal());
+            return new AuthResponseDto(auth.getName(), token);
+        } catch (BadCredentialsException ex) {
+            throw new UnauthorizedException("Credenciais inválidas");
+        }
 
     }
 
@@ -51,10 +58,10 @@ public class UserService {
 
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         String passwordRegex = "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+=<>?{}\\[\\]~;:.,-]).{8,}$";
-        String cpfCnpjRegex = "^\\d{11}$|^\\d{14}$";
+
 
         if(userRepository.existsByEmail(registerDto.email())){
-            throw new ConflictException("The email is already exist");
+            throw new ConflictException("O Email já está em uso");
 
         }
 
@@ -63,7 +70,7 @@ public class UserService {
         }
 
         if (!registerDto.password().matches(passwordRegex)) {
-            throw new BadRequestException("Password must be at least 8 characters long, contain one uppercase letter and one special character");
+            throw new BadRequestException("A senha deve conter pelo menos 8 caracteres e um caracter especial");
         }
 
 
