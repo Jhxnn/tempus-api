@@ -31,10 +31,11 @@ public class PointController {
 
     @Operation(summary = "Buscar todos os pontos de um funcionário")
     @ApiResponse(responseCode = "200", description = "Pontos encontrados com sucesso")
-    @GetMapping("/employee/{id}")
+    @GetMapping("/employee")
     public ResponseEntity<List<Point>> findAll(
-            @Parameter(description = "ID do funcionário") @PathVariable(name = "id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(pointService.findAll(id));
+            @RequestParam("id") UUID id,
+            @RequestParam("password") String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(pointService.findAll(id,password));
     }
 
     @Operation(summary = "Buscar pontos por período e funcionário")

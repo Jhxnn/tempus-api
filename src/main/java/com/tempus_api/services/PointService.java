@@ -3,6 +3,7 @@ package com.tempus_api.services;
 import com.tempus_api.dtos.EarningsDto;
 import com.tempus_api.dtos.EmployeeDto;
 import com.tempus_api.dtos.PointDto;
+import com.tempus_api.exceptions.BadRequestException;
 import com.tempus_api.models.Employee;
 import com.tempus_api.models.Enterprise;
 import com.tempus_api.models.Point;
@@ -116,9 +117,14 @@ public class PointService {
         return pointRepository.findById(id).orElseThrow(() -> new RuntimeException("cannot be found"));
     }
 
-    public List<Point> findAll(UUID id) {
-        Employee employee = employeeService.findById(id);
-        return pointRepository.findByEmployee(employee);
+    public List<Point> findAll(UUID id, String password) {
+        if(employeeService.loginEmployee(password, id)){
+            Employee employee = employeeService.findById(id);
+            return pointRepository.findByEmployee(employee);
+        }
+        throw  new BadRequestException("Senha incorreta");
+
+
     }
 
     public void deletePoint(UUID id){
